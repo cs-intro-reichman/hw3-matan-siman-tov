@@ -25,16 +25,26 @@ public class Algebra {
 
 	// Returns x1 + x2
 	public static int plus(int x1, int x2) {
-		for (int i = 0; i < x2; i++) {
-			x1++;
+		for (int i = 0; i < Math.abs(x2); i++) {
+			if (x2>0){
+				x1++;
+			}
+			else{
+				x1--;
+			}
 		}
 		return x1;
 	}
 
 	// Returns x1 - x2
 	public static int minus(int x1, int x2) {
-		for (int i = 0; i < x2; i++) {
-			x1--;
+		for (int i = 0; i < Math.abs(x2); i++) {
+			if (x2>0){
+				x1--;
+			}
+			else {
+				x1++;
+			}
 		}
 		return x1;
 	}
@@ -42,16 +52,19 @@ public class Algebra {
 	// Returns x1 * x2
 	public static int times(int x1, int x2) {
 		int times=0;
-		for (int i = 0; i < x2; i++) {
+		for (int i = 0; i < Math.abs(x2); i++) {
 			times = plus(x1, times);
 		}
-		return times;
+		if (x2<0){
+			return times*(-1);
+		}
+		return times;	
 	}
 
 	// Returns x^n (for n >= 0)
 	public static int pow(int x, int n) {
 		int pow=1;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < Math.abs(n); i++) {
 			pow = times(x, pow);
 		}
 		return pow;
@@ -60,9 +73,14 @@ public class Algebra {
 	// Returns the integer part of x1 / x2 
 	public static int div(int x1, int x2) {
 		int count=0;
-		while (x1 >= x2) {
+		int posX1 = Math.abs(x1);
+		int posX2 = Math.abs(x2);
+		while (posX1>=posX2) {
 			count++;
-			x1 = minus(x1, x2);
+			posX1 = minus(posX1, posX2);
+		}
+		if (times(x1,x2)<0){
+			return count*(-1);
 		}
 		return count;
 	}
@@ -77,9 +95,12 @@ public class Algebra {
 
 	// Returns the integer part of sqrt(x) 
 	public static int sqrt(int x) {
-		if (x <= 0) {
+		if (x == 0) {
             return 0;
         }
+		else if (x==1){
+			return 1;
+		}
         int g = div(x, 2);
         while (times(g, g) > x) {
             g = div(plus(g, div(x, g)), 2);
